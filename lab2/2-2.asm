@@ -1,5 +1,5 @@
 ;*****************************************************************
-;*Assembly program ot multiply two 8-bit numbers together
+;*Assembly program to control the LEDs based on the keypad
 ;*****************************************************************
 
 ; export symbols
@@ -11,14 +11,6 @@
 ; Include derivative-specific definitions 
 		INCLUDE 'derivative.inc' 
 
-
-;********************************************************************
-;* Code section *
-;********************************************************************
-            ORG $3000
-MULTIPLICAND FCB 05 ; First Number
-MULTIPLIER FCB 00 ; Second Number
-PRODUCT RMB 16 ; Result of multiplication
 ;********************************************************************
 ;* The actual program starts here *
 ;********************************************************************
@@ -26,14 +18,23 @@ PRODUCT RMB 16 ; Result of multiplication
 
 Entry:
 _Startup:
-            LDAA MULTIPLICAND ; Store the first number
-            LDAB MULTIPLIER ;  Store the second number
-            MUL ; Multiply them together
-            STAB PRODUCT ; and store the sum
-            SWI ; break to the monitor
+            
+            
+            BSET DDRP,%11111111 ; Configure Port P for output (LED2 cntrl)
+            BSET DDRE,%00010000 ; Configure pin PE4 for output (enable bit)
+            BCLR PORTE,%00010000; Enable keypad
+            
+     Loop:  LDAA PTS ; Read a key code into AccA
+            LSRA     ; Shift right Acca
+            LSRA
+            LSRA
+            LSRA
+            STAA PTP ; Output AccA content to LED2
+            BRA Loop ; Loop
 
 ;**************************************************************
 ;*                 Interrupt Vectors                          *
 ;**************************************************************
             ORG   $FFFE
             FDB   Entry           ; Reset Vector
+

@@ -22,8 +22,7 @@ _Startup:
             
             BSET DDRP,%11111111 ; Configure Port P for output
             LDAA #%10000000 ; Prepare to drive PP7 high
-            
-  Main Loop STAA PTP ; Drive PP7
+   MainLoop STAA PTP ; Drive PP7
             LDX #$1FFF ; Initialize the loop counter
       Delay DEX ;Decrement the loop counter
             BNE Delay ;If not done, continue to loop

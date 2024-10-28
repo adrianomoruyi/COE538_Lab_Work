@@ -21,12 +21,18 @@ _Startup:
 ************************************************************
             BSET DDRA,%00000011
             BSET DDRT,%00110000
-            JSR STARFWD
-            JSR PORTFWD
+            
+            
             JSR STARON
             JSR PORTON
+            
+            JSR STARFWD
+            JSR PORTFWD
+            
+     
             JSR STARREV
             JSR PORTREV
+            
             JSR STAROFF
             JSR PORTOFF
             BRA *
@@ -58,7 +64,7 @@ STARFWD     LDAA PORTA
             
 STARREV     LDAA PORTA
             ORAA #%00000010
-            STAA PTT
+            STAA PORTA
             RTS
            
 PORTFWD     LDAA PORTA
